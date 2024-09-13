@@ -1,4 +1,5 @@
 const UserModel = require("../models/UserModel")
+const bcrypt = require("bcrypt")
 
 const findUserByEmail = async (queryEmail) => {
     const user = await UserModel.findOne(
@@ -11,8 +12,9 @@ const findUserByEmail = async (queryEmail) => {
 }
 
 const registerUser = async (req, res) => {
+    const { email, password } = req.body;
 
-    const user = await findUserByEmail(req.body.email);
+    const user = await findUserByEmail(email);
     console.log(user);
 
     if (user) {
@@ -21,7 +23,11 @@ const registerUser = async (req, res) => {
         })
     }
 
-    const newUser = await UserModel.create(req.body);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await UserModel.create({
+        ...req.body,
+        password: hashedPassword
+    });
     res.status(201).json({
         message: "User account created successfully",
         user: newUser
@@ -43,7 +49,8 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ error: "User not found" });
         }
 
-        if (user.password !== password) {
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
             return res.status(400).json({ error: "Invalid password" });
         }
         
