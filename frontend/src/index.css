@@ -1,0 +1,53 @@
+.custom-navbar {
+    background-color: #1d3557;
+}
+
+.navbar-brand {
+    color: #fff !important;
+}
+
+.nav-link {
+    position: relative;
+    text-decoration: none;
+    color: #ffffffb5 !important;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    left: 2.5px;
+    bottom: 5px;
+    height: 2px;
+    width: 0;
+    background-color: #fefae0;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #fefae0 !important;
+}
+
+.nav-link:hover::before {
+    width: 90%;
+}
+
+.nav-link.active::before {
+    width: 90%;
+}
+
+.nav-link.active {
+    color: #fefae0 !important;
+}
+
+.main {
+    min-height: calc(100vh - 56px - 56px);
+}
+
+footer {
+    background-color: #1d3557;
+    color: #fefae0;
+}
+
+footer a {
+    text-decoration: none;
+}
