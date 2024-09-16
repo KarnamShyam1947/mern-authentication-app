@@ -1,8 +1,32 @@
-import React from 'react';
-import { Container, Row, Col, Button, Form, InputGroup } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { FaFacebookF, FaTwitter } from 'react-icons/fa';
 
 function Login() {
+
+  const initialValues = {
+    email: "",
+    password: ""
+  }
+
+  const [formValues, setFormValues] = useState(initialValues);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormValues({
+      ...formValues,
+      [name]: value
+    })
+  }
+
+  const handleFormSubmission = (e) => {
+    e.preventDefault();
+    
+    alert("From submitted");
+    setFormValues(initialValues);
+  }
+
   return (
     <Container fluid style={{paddingTop:"150px"}}>
       <Row>
@@ -15,13 +39,27 @@ function Login() {
         </Col>
 
         <Col xs={12} md={6} className="d-flex flex-column align-items-center">
-          <Form className="w-75">
+          <Form onSubmit={handleFormSubmission} className="w-75">
             <Form.Group className="mb-4">
-              <Form.Control type="email" placeholder="Enter email" size="lg" />
+              <Form.Control 
+                size="lg" 
+                name='email'
+                type="email" 
+                value={formValues.email}
+                placeholder="Enter email" 
+                onChange={handleInputChange}
+                />
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Control type="password" placeholder="Password" size="lg" />
+              <Form.Control 
+                size="lg" 
+                type="password" 
+                name='password'
+                value={formValues.password}
+                placeholder="Enter Password" 
+                onChange={handleInputChange}
+              />
             </Form.Group>
 
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -29,9 +67,9 @@ function Login() {
               <a href="#!">Forgot password?</a>
             </div>
 
-            <Button className="w-100" size="lg" variant="primary">Sign in</Button>
+            <Button className="w-100" size="lg" type='submit' variant="primary">Sign in</Button>
 
-            <Row className="align-items-center">
+            <Row className="my-3 align-items-center">
               <Col xs={5}>
                 <hr />
               </Col>

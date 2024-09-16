@@ -1,28 +1,74 @@
-import React from 'react'
-import { Container, Row, Col, Button, Form, Alert } from 'react-bootstrap';
+import React, { useState } from 'react'
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { FaFacebookF, FaTwitter } from 'react-icons/fa';
 
 function Register() {
+  const initialValues = {
+    name: "",
+    email: "",
+    password: ""
+  }
+
+  const [formValues, setFormValues] = useState(initialValues);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormValues({
+      ...formValues,
+      [name]: value
+    })
+  }
+
+  const handleFormSubmission = (e) => {
+    e.preventDefault();
+
+    alert("From submitted");
+    setFormValues(initialValues);
+  }
+
   return (
-    <Container fluid style={{paddingTop:"150px"}}>
+    <Container fluid style={{ paddingTop: "150px" }}>
       <Row>
         <Col xs={12} md={6} className="d-flex flex-column align-items-center">
-          <Form className="w-75">
+          <Form onSubmit={handleFormSubmission} className="w-75">
+
             <Form.Group className="mb-4">
-              <Form.Control type="email" placeholder="Enter username" size="lg" />
+              <Form.Control
+                size="lg"
+                name='name'
+                type="text"
+                value={formValues.name}
+                placeholder="Enter username"
+                onChange={handleInputChange}
+              />
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Control type="email" placeholder="Enter email" size="lg" />
+              <Form.Control
+                size="lg"
+                name='email'
+                type="email"
+                value={formValues.email}
+                placeholder="Enter email"
+                onChange={handleInputChange}
+              />
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Control type="password" placeholder="Password" size="lg" />
+              <Form.Control
+                size="lg"
+                type="password"
+                name='password'
+                value={formValues.password}
+                placeholder="Enter Password"
+                onChange={handleInputChange}
+              />
             </Form.Group>
 
-            <Button className="w-100" size="lg" variant="primary">Sign up</Button>
+            <Button className="w-100" type='submit' size="lg" variant="primary">Sign up</Button>
 
-            <Row className="align-items-center">
+            <Row className="my-3 align-items-center">
               <Col xs={5}>
                 <hr />
               </Col>
