@@ -9,6 +9,7 @@ function Register() {
     password: ""
   }
 
+  const [formErrors, setFormErrors] = useState({});
   const [formValues, setFormValues] = useState(initialValues);
 
   const handleInputChange = (e) => {
@@ -22,9 +23,35 @@ function Register() {
 
   const handleFormSubmission = (e) => {
     e.preventDefault();
+    const errors = validateInput();
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      alert("form has errors");
+      return;
+    }
 
-    alert("From submitted");
+    alert("Form submitted successfully");
+    setFormErrors({});
     setFormValues(initialValues);
+  }
+
+  const validateInput = () => {
+    let errors = {};
+
+    if (formValues.name.trim() === "") {
+      errors.name = "Name is required"
+    }
+
+    if (formValues.email.trim() === "") {
+      errors.email = "Email is required"
+    }
+
+    if (formValues.password.trim() === "") {
+      errors.password = "Password is required"
+    }
+
+    return errors;
   }
 
   return (
@@ -39,9 +66,13 @@ function Register() {
                 name='name'
                 type="text"
                 value={formValues.name}
+                isInvalid={formErrors.name}
                 placeholder="Enter username"
                 onChange={handleInputChange}
               />
+              <Form.Control.Feedback type='invalid'>
+                {formErrors.name}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="mb-4">
@@ -50,9 +81,13 @@ function Register() {
                 name='email'
                 type="email"
                 value={formValues.email}
+                isInvalid={formErrors.email}
                 placeholder="Enter email"
                 onChange={handleInputChange}
               />
+              <Form.Control.Feedback type='invalid'>
+                {formErrors.email}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="mb-4">
@@ -61,9 +96,13 @@ function Register() {
                 type="password"
                 name='password'
                 value={formValues.password}
+                isInvalid={formErrors.password}
                 placeholder="Enter Password"
                 onChange={handleInputChange}
               />
+              <Form.Control.Feedback type='invalid'>
+                {formErrors.password}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Button className="w-100" type='submit' size="lg" variant="primary">Sign up</Button>

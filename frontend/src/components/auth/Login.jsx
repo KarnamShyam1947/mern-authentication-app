@@ -9,6 +9,7 @@ function Login() {
     password: ""
   }
 
+  const [formErrors, setFormErrors] = useState({});
   const [formValues, setFormValues] = useState(initialValues);
 
   const handleInputChange = (e) => {
@@ -22,13 +23,36 @@ function Login() {
 
   const handleFormSubmission = (e) => {
     e.preventDefault();
+
+    const errors = validateInput();
     
-    alert("From submitted");
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      alert("form has errors");
+      return;
+    }
+
+    alert("Form submitted successfully");
+    setFormErrors({});
     setFormValues(initialValues);
   }
 
+  const validateInput = () => {
+    let errors = {};
+
+    if (formValues.email.trim() === "") {
+      errors.email = "Email is required"
+    }
+
+    if (formValues.password.trim() === "") {
+      errors.password = "Password is required"
+    }
+
+    return errors;
+  }
+
   return (
-    <Container fluid style={{paddingTop:"150px"}}>
+    <Container fluid style={{ paddingTop: "150px" }}>
       <Row>
         <Col xs={12} md={6} className="d-flex justify-content-center">
           <img
@@ -41,25 +65,35 @@ function Login() {
         <Col xs={12} md={6} className="d-flex flex-column align-items-center">
           <Form onSubmit={handleFormSubmission} className="w-75">
             <Form.Group className="mb-4">
-              <Form.Control 
-                size="lg" 
+              <Form.Control
+                size="lg"
                 name='email'
-                type="email" 
+                type="email"
                 value={formValues.email}
-                placeholder="Enter email" 
+                placeholder="Enter email"
+                isInvalid={formErrors.email}
                 onChange={handleInputChange}
-                />
+              />
+
+              <Form.Control.Feedback type='invalid'>
+                {formErrors.email}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Control 
-                size="lg" 
-                type="password" 
+              <Form.Control
+                size="lg"
+                type="password"
                 name='password'
                 value={formValues.password}
-                placeholder="Enter Password" 
+                placeholder="Enter Password"
                 onChange={handleInputChange}
+                isInvalid={formErrors.password}
               />
+
+              <Form.Control.Feedback type='invalid'>
+                {formErrors.password}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <div className="d-flex justify-content-between align-items-center mb-4">
